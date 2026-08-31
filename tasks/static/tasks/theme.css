@@ -1,0 +1,288 @@
+/* =========================================
+   PROJECTFLOW GLOBAL DARK / LIGHT THEME
+========================================= */
+
+body {
+    transition: background-color .25s ease, color .25s ease;
+}
+
+/* THEME BUTTON */
+
+.theme-toggle {
+    width: 38px;
+    height: 38px;
+    border: 1px solid #e5e7eb;
+    border-radius: 9px;
+    background: white;
+    color: #374151;
+    cursor: pointer;
+    font-size: 17px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: .2s;
+}
+
+.theme-toggle:hover {
+    background: #f3f4f6;
+}
+
+/* =========================================
+   DARK MODE
+========================================= */
+
+body.dark {
+    background: #0f172a !important;
+    color: #e5e7eb;
+}
+
+/* Main areas */
+
+body.dark .main,
+body.dark main,
+body.dark .content {
+    background: #0f172a;
+}
+
+/* Topbar */
+
+body.dark .topbar {
+    background: #111827;
+    border-color: #1f2937;
+}
+
+body.dark .page-title {
+    color: #f9fafb;
+}
+
+body.dark .top-user {
+    color: #e5e7eb;
+}
+
+body.dark .notification {
+    background: #111827;
+    border-color: #374151;
+    color: #cbd5e1;
+}
+
+body.dark .theme-toggle {
+    background: #111827;
+    border-color: #374151;
+    color: #f9fafb;
+}
+
+body.dark .theme-toggle:hover {
+    background: #1f2937;
+}
+
+/* Welcome */
+
+body.dark .welcome h1 {
+    color: #f9fafb;
+}
+
+body.dark .welcome p {
+    color: #94a3b8;
+}
+
+/* Buttons */
+
+body.dark .secondary {
+    background: #111827;
+    color: #e5e7eb;
+    border-color: #374151;
+}
+
+body.dark .secondary:hover {
+    background: #1f2937;
+}
+
+/* =========================================
+   DASHBOARD
+========================================= */
+
+body.dark .stat-card {
+    background: #111827;
+    border-color: #1f2937;
+}
+
+body.dark .stat-label {
+    color: #94a3b8;
+}
+
+body.dark .stat-number {
+    color: #f9fafb;
+}
+
+body.dark .section-header h2 {
+    color: #f9fafb;
+}
+
+body.dark .section-header span {
+    color: #94a3b8;
+}
+
+body.dark .project-card {
+    background: #111827;
+    border-color: #1f2937;
+}
+
+body.dark .project-card:hover {
+    border-color: #4f46e5;
+}
+
+body.dark .project-name h3 {
+    color: #f9fafb;
+}
+
+body.dark .project-name small {
+    color: #64748b;
+}
+
+body.dark .description {
+    color: #94a3b8;
+}
+
+body.dark .project-actions a {
+    background: #1f2937;
+    color: #94a3b8;
+}
+
+body.dark .project-actions a:hover {
+    background: #312e81;
+    color: #c7d2fe;
+}
+
+body.dark .task {
+    border-color: #1f2937;
+}
+
+body.dark .task-title {
+    color: #e5e7eb;
+}
+
+body.dark .task-description {
+    color: #94a3b8;
+}
+
+body.dark .task-actions a {
+    color: #94a3b8;
+}
+
+body.dark .due {
+    color: #64748b;
+}
+
+body.dark .empty h3 {
+    color: #f9fafb;
+}
+
+body.dark .empty p {
+    color: #94a3b8;
+}
+
+/* =========================================
+   PROJECTS / TASKS LIST
+========================================= */
+
+body.dark .card,
+body.dark .project-item,
+body.dark .task-card,
+body.dark .project-box,
+body.dark .task-box {
+    background: #111827;
+    border-color: #1f2937;
+}
+
+body.dark h1,
+body.dark h2,
+body.dark h3,
+body.dark h4 {
+    color: #f9fafb;
+}
+
+body.dark p {
+    color: #94a3b8;
+}
+
+body.dark label {
+    color: #cbd5e1;
+}
+
+/* =========================================
+   FORMS
+========================================= */
+
+body.dark input,
+body.dark textarea,
+body.dark select {
+    background: #111827 !important;
+    color: #f9fafb !important;
+    border-color: #374151 !important;
+}
+
+body.dark input::placeholder,
+body.dark textarea::placeholder {
+    color: #64748b;
+}
+
+body.dark input:focus,
+body.dark textarea:focus,
+body.dark select:focus {
+    border-color: #6366f1 !important;
+    outline: none;
+}
+
+/* =========================================
+   SETTINGS
+========================================= */
+
+body.dark .settings-card,
+body.dark .settings-container,
+body.dark .settings-box {
+    background: #111827;
+    border-color: #1f2937;
+}
+
+body.dark .settings-card h2,
+body.dark .settings-card h3 {
+    color: #f9fafb;
+}
+
+/* =========================================
+   LINKS
+========================================= */
+
+body.dark a {
+    color: inherit;
+}
+
+/* =========================================
+   TABLES
+========================================= */
+
+body.dark table {
+    background: #111827;
+    color: #e5e7eb;
+}
+
+body.dark th {
+    background: #1f2937;
+    color: #f9fafb;
+}
+
+body.dark td {
+    border-color: #374151;
+}
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 750px) {
+
+    body.dark .sidebar {
+        background: #111827;
+    }
+
+}

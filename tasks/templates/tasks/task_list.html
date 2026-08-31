@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Tasks | ProjectFlow</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        :root {
+            --bg: #f7f8fc;
+            --card: #ffffff;
+            --text: #172033;
+            --text-secondary: #64748b;
+            --muted: #8a93a3;
+            --border: #e8eaf0;
+            --line: #edf0f4;
+            --sidebar: #111827;
+            --sidebar-hover: #1f2937;
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+        }
+
+        body.dark {
+            --bg: #0f172a;
+            --card: #1e293b;
+            --text: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --muted: #94a3b8;
+            --border: #334155;
+            --line: #334155;
+            --sidebar: #020617;
+            --sidebar-hover: #1e293b;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            transition: background-color .25s ease, color .25s ease;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* SIDEBAR */
+
+        .sidebar {
+            width: 245px;
+            background: var(--sidebar);
+            color: white;
+            padding: 25px 16px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            padding: 5px 12px 35px;
+        }
+
+        .logo-icon {
+            width: 38px;
+            height: 38px;
+            background: #6366f1;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .logo h2 {
+            font-size: 19px;
+        }
+
+        .menu-title {
+            color: #6b7280;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 0 13px 10px;
+        }
+
+        .nav {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .nav a {
+            color: #9ca3af;
+            padding: 12px 13px;
+            border-radius: 9px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: .2s;
+        }
+
+        .nav a:hover {
+            background: var(--sidebar-hover);
+            color: white;
+        }
+
+        .nav a.active {
+            background: var(--sidebar-hover);
+            color: white;
+            border-left: 3px solid #6366f1;
+        }
+
+        .nav-icon {
+            width: 20px;
+            text-align: center;
+        }
+
+        .sidebar-bottom {
+            margin-top: auto;
+        }
+
+        /* PROFILE USER BOX */
+
+        .profile-link {
+            display: block;
+            color: inherit;
+            border-radius: 10px;
+            margin-top: 5px;
+        }
+
+        .profile-link:hover {
+            background: var(--sidebar-hover);
+        }
+
+        .user-box {
+            border-top: 1px solid #293241;
+            padding: 18px 10px 5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #6366f1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .user-details {
+            overflow: hidden;
+        }
+
+        .user-details strong {
+            display: block;
+            color: white;
+            font-size: 13px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .user-details span {
+            color: #6b7280;
+            font-size: 11px;
+        }
+
+        .logout {
+            display: block;
+            color: #9ca3af;
+            padding: 12px;
+            margin-top: 10px;
+            font-size: 13px;
+            border-radius: 8px;
+        }
+
+        .logout:hover {
+            color: #f87171;
+            background: var(--sidebar-hover);
+        }
+
+        /* MAIN */
+
+        .main {
+            margin-left: 245px;
+            width: calc(100% - 245px);
+            min-height: 100vh;
+        }
+
+        /* TOPBAR */
+
+        .topbar {
+            height: 72px;
+            background: var(--card);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 38px;
+        }
+
+        .page-title {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .top-right {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .notification {
+            width: 36px;
+            height: 36px;
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--text-secondary);
+            background: var(--card);
+        }
+
+        .theme-toggle {
+            width: 40px;
+            height: 40px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: var(--card);
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        /* CLICKABLE TOP PROFILE */
+
+        .top-profile-link {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .top-user {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            color: var(--text-secondary);
+            font-size: 13px;
+            font-weight: 600;
+            padding: 5px 8px;
+            border-radius: 9px;
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        .top-user:hover {
+            background: var(--bg);
+        }
+
+        .small-avatar {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: #eef2ff;
+            color: #4f46e5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+        }
+
+        /* CONTENT */
+
+        .content {
+            padding: 38px;
+            max-width: 1200px;
+        }
+
+        .breadcrumb {
+            color: var(--muted);
+            font-size: 12px;
+            margin-bottom: 20px;
+        }
+
+        .breadcrumb a {
+            color: #6366f1;
+        }
+
+        .heading-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 28px;
+            gap: 20px;
+        }
+
+        .heading h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .heading p {
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .new-task {
+            background: var(--primary);
+            color: white;
+            padding: 12px 18px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .new-task:hover {
+            background: var(--primary-hover);
+        }
+
+        /* TASK CARD */
+
+        .task-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 13px;
+            margin-bottom: 16px;
+            padding: 23px;
+            transition: .25s;
+        }
+
+        .task-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(15, 23, 42, .12);
+        }
+
+        .task-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 20px;
+        }
+
+        .task-title {
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 8px;
+        }
+
+        .task-description {
+            color: var(--text-secondary);
+            font-size: 13px;
+            line-height: 1.6;
+            max-width: 750px;
+        }
+
+        /* STATUS */
+
+        .status {
+            padding: 6px 11px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .todo {
+            background: #f1f5f9;
+            color: #64748b;
+        }
+
+        .progress {
+            background: #eef2ff;
+            color: #4f46e5;
+        }
+
+        .completed {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        body.dark .todo {
+            background: #334155;
+            color: #cbd5e1;
+        }
+
+        body.dark .progress {
+            background: #312e81;
+            color: #c7d2fe;
+        }
+
+        body.dark .completed {
+            background: #14532d;
+            color: #bbf7d0;
+        }
+
+        /* DETAILS */
+
+        .task-details {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 28px;
+            margin-top: 18px;
+            padding-top: 16px;
+            border-top: 1px solid var(--line);
+        }
+
+        .detail {
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .detail strong {
+            color: var(--text-secondary);
+        }
+
+        /* ACTIONS */
+
+        .task-actions {
+            margin-top: 18px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .action-btn {
+            padding: 8px 12px;
+            border-radius: 7px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .edit {
+            color: #4f46e5;
+            background: #eef2ff;
+        }
+
+        .delete {
+            color: #dc2626;
+            background: #fef2f2;
+        }
+
+        .edit:hover {
+            background: #e0e7ff;
+        }
+
+        .delete:hover {
+            background: #fee2e2;
+        }
+
+        body.dark .edit {
+            background: #312e81;
+            color: #c7d2fe;
+        }
+
+        body.dark .delete {
+            background: #450a0a;
+            color: #fca5a5;
+        }
+
+        /* EMPTY */
+
+        .empty-state {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 13px;
+            padding: 70px 30px;
+            text-align: center;
+        }
+
+        .empty-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 14px;
+            background: #eef2ff;
+            color: #6366f1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 18px;
+            font-size: 25px;
+        }
+
+        .empty-state h2 {
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+
+        .empty-state p {
+            color: var(--muted);
+            font-size: 13px;
+            margin-bottom: 22px;
+        }
+
+        body.dark .empty-icon {
+            background: #312e81;
+            color: #c7d2fe;
+        }
+
+        body.dark .small-avatar {
+            background: #312e81;
+            color: #c7d2fe;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 750px) {
+
+            .sidebar {
+                width: 70px;
+                padding: 20px 10px;
+            }
+
+            .logo h2,
+            .menu-title,
+            .nav a span:not(.nav-icon),
+            .user-details,
+            .logout span {
+                display: none;
+            }
+
+            .logo {
+                justify-content: center;
+            }
+
+            .nav a {
+                justify-content: center;
+            }
+
+            .user-box {
+                justify-content: center;
+            }
+
+            .main {
+                margin-left: 70px;
+                width: calc(100% - 70px);
+            }
+
+            .topbar {
+                padding: 0 20px;
+            }
+
+            .content {
+                padding: 25px 20px;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .heading-row {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .new-task {
+                width: 100%;
+                text-align: center;
+            }
+
+            .task-top {
+                flex-direction: column;
+            }
+
+            .task-details {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .top-user {
+                display: none;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="layout">
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+
+            <div class="logo-icon">
+                P
+            </div>
+
+            <h2>
+                ProjectFlow
+            </h2>
+
+        </div>
+
+        <div class="menu-title">
+            Workspace
+        </div>
+
+        <nav class="nav">
+
+            <a href="{% url 'dashboard' %}">
+                <span class="nav-icon">▦</span>
+                <span>Dashboard</span>
+            </a>
+
+            <a href="{% url 'projects' %}">
+                <span class="nav-icon">▣</span>
+                <span>Projects</span>
+            </a>
+
+            <a href="{% url 'task_list' %}" class="active">
+                <span class="nav-icon">✓</span>
+                <span>Tasks</span>
+            </a>
+
+        </nav>
+
+
+        <!-- ACCOUNT -->
+
+        <div class="sidebar-bottom">
+
+            <div class="menu-title">
+                Account
+            </div>
+
+            <nav class="nav">
+
+                <a href="{% url 'settings' %}">
+                    <span class="nav-icon">⚙</span>
+                    <span>Settings</span>
+                </a>
+
+            </nav>
+
+
+            <!-- CLICKABLE PROFILE -->
+
+            <a href="{% url 'profile' %}" class="profile-link">
+
+                <div class="user-box">
+
+                    <div class="avatar">
+                        {{ user.username|first|upper }}
+                    </div>
+
+                    <div class="user-details">
+
+                        <strong>
+                            {{ user.username }}
+                        </strong>
+
+                        <span>
+                            Project Manager
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+
+            <!-- LOGOUT -->
+
+            <a href="{% url 'logout' %}" class="logout">
+
+                <span>
+                    ↪ &nbsp; Logout
+                </span>
+
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN -->
+
+    <main class="main">
+
+
+        <!-- TOPBAR -->
+
+        <header class="topbar">
+
+            <div class="page-title">
+                Tasks
+            </div>
+
+            <div class="top-right">
+
+                <div class="notification">
+                    ♢
+                </div>
+
+                <button
+                    type="button"
+                    class="theme-toggle"
+                    id="themeToggle"
+                >
+                    🌙
+                </button>
+
+
+                <!-- CLICKABLE TOP PROFILE -->
+
+                <a
+                    href="{% url 'profile' %}"
+                    class="top-profile-link"
+                >
+
+                    <div class="top-user">
+
+                        <div class="small-avatar">
+
+                            {{ user.username|first|upper }}
+
+                        </div>
+
+                        {{ user.username }}
+
+                    </div>
+
+                </a>
+
+            </div>
+
+        </header>
+
+
+        <!-- CONTENT -->
+
+        <div class="content">
+
+            <div class="breadcrumb">
+
+                <a href="{% url 'dashboard' %}">
+                    Dashboard
+                </a>
+
+                &nbsp; / &nbsp;
+
+                Tasks
+
+            </div>
+
+
+            <div class="heading-row">
+
+                <div class="heading">
+
+                    <h1>
+                        Your Tasks
+                    </h1>
+
+                    <p>
+                        Manage and track all tasks across your projects.
+                    </p>
+
+                </div>
+
+                <a
+                    href="{% url 'create_task' %}"
+                    class="new-task"
+                >
+                    + New Task
+                </a>
+
+            </div>
+
+
+            <!-- TASKS -->
+
+            {% if tasks %}
+
+                {% for task in tasks %}
+
+                    <div class="task-card">
+
+                        <div class="task-top">
+
+                            <div>
+
+                                <div class="task-title">
+                                    {{ task.title }}
+                                </div>
+
+                                <div class="task-description">
+
+                                    {% if task.description %}
+
+                                        {{ task.description }}
+
+                                    {% else %}
+
+                                        No description added.
+
+                                    {% endif %}
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- STATUS -->
+
+                            {% if task.status == "Completed" %}
+
+                                <span class="status completed">
+                                    Completed
+                                </span>
+
+                            {% elif task.status == "In Progress" %}
+
+                                <span class="status progress">
+                                    In Progress
+                                </span>
+
+                            {% else %}
+
+                                <span class="status todo">
+                                    To Do
+                                </span>
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <!-- DETAILS -->
+
+                        <div class="task-details">
+
+                            <div class="detail">
+
+                                Project:
+
+                                <strong>
+                                    {{ task.project.name }}
+                                </strong>
+
+                            </div>
+
+
+                            <div class="detail">
+
+                                Assigned To:
+
+                                <strong>
+
+                                    {% if task.assigned_to %}
+
+                                        {{ task.assigned_to.username }}
+
+                                    {% else %}
+
+                                        Unassigned
+
+                                    {% endif %}
+
+                                </strong>
+
+                            </div>
+
+
+                            <div class="detail">
+
+                                Due Date:
+
+                                <strong>
+
+                                    {% if task.due_date %}
+
+                                        {{ task.due_date }}
+
+                                    {% else %}
+
+                                        No deadline
+
+                                    {% endif %}
+
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- ACTIONS -->
+
+                        <div class="task-actions">
+
+                            <a
+                                href="{% url 'edit_task' task.id %}"
+                                class="action-btn edit"
+                            >
+                                Edit
+                            </a>
+
+                            <a
+                                href="{% url 'delete_task' task.id %}"
+                                class="action-btn delete"
+                            >
+                                Delete
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
+
+            {% else %}
+
+
+                <!-- EMPTY STATE -->
+
+                <div class="empty-state">
+
+                    <div class="empty-icon">
+                        ✓
+                    </div>
+
+                    <h2>
+                        No Tasks Yet
+                    </h2>
+
+                    <p>
+                        You haven't created any tasks yet.
+                    </p>
+
+                    <a
+                        href="{% url 'create_task' %}"
+                        class="new-task"
+                    >
+                        + Create Your First Task
+                    </a>
+
+                </div>
+
+
+            {% endif %}
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<!-- THEME SCRIPT -->
+
+<script>
+
+    const themeToggle =
+        document.getElementById("themeToggle");
+
+
+    function updateThemeButton() {
+
+        if (document.body.classList.contains("dark")) {
+
+            themeToggle.textContent = "☀️";
+
+            themeToggle.title =
+                "Switch to light mode";
+
+        } else {
+
+            themeToggle.textContent = "🌙";
+
+            themeToggle.title =
+                "Switch to dark mode";
+
+        }
+
+    }
+
+
+    const savedTheme =
+        localStorage.getItem("projectflow-theme");
+
+
+    if (savedTheme === "dark") {
+
+        document.body.classList.add("dark");
+
+    }
+
+
+    updateThemeButton();
+
+
+    themeToggle.addEventListener("click", function () {
+
+        document.body.classList.toggle("dark");
+
+
+        const isDark =
+            document.body.classList.contains("dark");
+
+
+        localStorage.setItem(
+            "projectflow-theme",
+            isDark ? "dark" : "light"
+        );
+
+
+        updateThemeButton();
+
+    });
+
+</script>
+
+</body>
+
+</html>

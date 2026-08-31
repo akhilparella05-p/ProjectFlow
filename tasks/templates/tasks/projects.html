@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Projects | ProjectFlow</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        :root {
+            --bg: #f7f8fc;
+            --card: #ffffff;
+            --text: #172033;
+            --text-secondary: #64748b;
+            --muted: #9ca3af;
+            --border: #e8eaf0;
+            --line: #edf0f4;
+            --sidebar: #111827;
+            --sidebar-hover: #1f2937;
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+        }
+
+        body.dark {
+            --bg: #0f172a;
+            --card: #1e293b;
+            --text: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --muted: #94a3b8;
+            --border: #334155;
+            --line: #334155;
+            --sidebar: #020617;
+            --sidebar-hover: #1e293b;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            transition: background-color .25s ease, color .25s ease;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* SIDEBAR */
+
+        .sidebar {
+            width: 245px;
+            background: var(--sidebar);
+            color: white;
+            padding: 25px 16px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            padding: 5px 12px 35px;
+        }
+
+        .logo-icon {
+            width: 38px;
+            height: 38px;
+            background: #6366f1;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .logo h2 {
+            font-size: 19px;
+        }
+
+        .menu-title {
+            color: #6b7280;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 0 13px 10px;
+        }
+
+        .nav {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .nav a {
+            color: #9ca3af;
+            padding: 12px 13px;
+            border-radius: 9px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: .2s;
+        }
+
+        .nav a:hover {
+            background: var(--sidebar-hover);
+            color: white;
+        }
+
+        .nav a.active {
+            background: var(--sidebar-hover);
+            color: white;
+            border-left: 3px solid #6366f1;
+        }
+
+        .nav-icon {
+            width: 20px;
+            text-align: center;
+        }
+
+        .sidebar-bottom {
+            margin-top: auto;
+        }
+
+        /* CLICKABLE LEFT PROFILE */
+
+        .user-box {
+            border-top: 1px solid #293241;
+            padding: 18px 10px 5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: inherit;
+            border-radius: 8px;
+            transition: 0.2s;
+        }
+
+        .user-box:hover {
+            background: var(--sidebar-hover);
+        }
+
+        .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #6366f1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .user-details {
+            overflow: hidden;
+        }
+
+        .user-details strong {
+            display: block;
+            color: white;
+            font-size: 13px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .user-details span {
+            color: #6b7280;
+            font-size: 11px;
+        }
+
+        .logout {
+            display: block;
+            color: #9ca3af;
+            padding: 12px;
+            margin-top: 10px;
+            font-size: 13px;
+            border-radius: 8px;
+        }
+
+        .logout:hover {
+            color: #f87171;
+            background: var(--sidebar-hover);
+        }
+
+        /* MAIN */
+
+        .main {
+            margin-left: 245px;
+            width: calc(100% - 245px);
+            min-height: 100vh;
+        }
+
+        /* TOPBAR */
+
+        .topbar {
+            height: 72px;
+            background: var(--card);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 38px;
+        }
+
+        .page-title {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .top-right {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .notification {
+            width: 36px;
+            height: 36px;
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--text-secondary);
+            background: var(--card);
+        }
+
+        .theme-toggle {
+            width: 40px;
+            height: 40px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: var(--card);
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        /* CLICKABLE TOP PROFILE */
+
+        .top-user {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            color: var(--text-secondary);
+            font-size: 13px;
+            font-weight: 600;
+            padding: 5px 8px;
+            border-radius: 9px;
+            text-decoration: none;
+            transition: 0.2s;
+            cursor: pointer;
+        }
+
+        .top-user:hover {
+            background: var(--bg);
+            color: var(--primary);
+        }
+
+        .small-avatar {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: #eef2ff;
+            color: #4f46e5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+        }
+
+        /* CONTENT */
+
+        .content {
+            padding: 38px;
+            max-width: 1200px;
+        }
+
+        .breadcrumb {
+            color: var(--muted);
+            font-size: 12px;
+            margin-bottom: 20px;
+        }
+
+        .breadcrumb a {
+            color: #6366f1;
+        }
+
+        .heading-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 28px;
+            gap: 20px;
+        }
+
+        .heading h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .heading p {
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .new-project {
+            background: var(--primary);
+            color: white;
+            padding: 12px 18px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .new-project:hover {
+            background: var(--primary-hover);
+        }
+
+        /* PROJECT GRID */
+
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .project-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 13px;
+            padding: 24px;
+            transition: .2s;
+        }
+
+        .project-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(15, 23, 42, .08);
+        }
+
+        .project-top {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 18px;
+        }
+
+        .project-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            background: #eef2ff;
+            color: #4f46e5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .project-menu {
+            color: var(--muted);
+            font-size: 20px;
+        }
+
+        .project-card h2 {
+            font-size: 17px;
+            color: var(--text);
+            margin-bottom: 9px;
+            word-break: break-word;
+        }
+
+        .project-description {
+            color: var(--text-secondary);
+            font-size: 13px;
+            line-height: 1.6;
+            min-height: 42px;
+            margin-bottom: 20px;
+        }
+
+        .project-footer {
+            border-top: 1px solid var(--line);
+            padding-top: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .project-label {
+            color: var(--muted);
+            font-size: 11px;
+        }
+
+        .project-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .action-btn {
+            padding: 7px 10px;
+            border-radius: 7px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .edit {
+            color: #4f46e5;
+            background: #eef2ff;
+        }
+
+        .delete {
+            color: #dc2626;
+            background: #fef2f2;
+        }
+
+        .edit:hover {
+            background: #e0e7ff;
+        }
+
+        .delete:hover {
+            background: #fee2e2;
+        }
+
+        /* EMPTY */
+
+        .empty-state {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 13px;
+            padding: 70px 30px;
+            text-align: center;
+        }
+
+        .empty-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 14px;
+            background: #eef2ff;
+            color: #6366f1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 18px;
+            font-size: 25px;
+        }
+
+        .empty-state h2 {
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+
+        .empty-state p {
+            color: var(--muted);
+            font-size: 13px;
+            margin-bottom: 22px;
+        }
+
+        .empty-btn {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 11px 18px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        body.dark .project-icon,
+        body.dark .empty-icon {
+            background: #312e81;
+            color: #c7d2fe;
+        }
+
+        body.dark .edit {
+            background: #312e81;
+            color: #c7d2fe;
+        }
+
+        body.dark .delete {
+            background: #450a0a;
+            color: #fca5a5;
+        }
+
+        body.dark .small-avatar {
+            background: #312e81;
+            color: #c7d2fe;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 1000px) {
+            .project-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 750px) {
+            .sidebar {
+                width: 70px;
+                padding: 20px 10px;
+            }
+
+            .logo h2,
+            .menu-title,
+            .nav a span:not(.nav-icon),
+            .user-details,
+            .logout span {
+                display: none;
+            }
+
+            .logo {
+                justify-content: center;
+            }
+
+            .nav a {
+                justify-content: center;
+            }
+
+            .user-box {
+                justify-content: center;
+            }
+
+            .main {
+                margin-left: 70px;
+                width: calc(100% - 70px);
+            }
+
+            .topbar {
+                padding: 0 20px;
+            }
+
+            .content {
+                padding: 25px 20px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .project-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .heading-row {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .new-project {
+                width: 100%;
+                text-align: center;
+            }
+
+            .top-user {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="layout">
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            <div class="logo-icon">P</div>
+            <h2>ProjectFlow</h2>
+        </div>
+
+        <div class="menu-title">Workspace</div>
+
+        <nav class="nav">
+
+            <a href="{% url 'dashboard' %}">
+                <span class="nav-icon">▦</span>
+                <span>Dashboard</span>
+            </a>
+
+            <a href="{% url 'projects' %}" class="active">
+                <span class="nav-icon">▣</span>
+                <span>Projects</span>
+            </a>
+
+            <a href="{% url 'task_list' %}">
+                <span class="nav-icon">✓</span>
+                <span>Tasks</span>
+            </a>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+
+            <div class="menu-title">Account</div>
+
+            <nav class="nav">
+
+                <a href="{% url 'settings' %}">
+                    <span class="nav-icon">⚙</span>
+                    <span>Settings</span>
+                </a>
+
+            </nav>
+
+            <!-- CLICKABLE PROFILE -->
+
+            <a href="{% url 'profile' %}" class="user-box">
+
+                <div class="avatar">
+                    {{ user.username|first|upper }}
+                </div>
+
+                <div class="user-details">
+
+                    <strong>{{ user.username }}</strong>
+
+                    <span>Project Manager</span>
+
+                </div>
+
+            </a>
+
+            <!-- LOGOUT -->
+
+            <a href="{% url 'logout' %}" class="logout">
+                <span>↪ &nbsp; Logout</span>
+            </a>
+
+        </div>
+
+    </aside>
+
+    <main class="main">
+
+        <header class="topbar">
+
+            <div class="page-title">
+                Projects
+            </div>
+
+            <div class="top-right">
+
+                <div class="notification">
+                    ♢
+                </div>
+
+                <button
+                    type="button"
+                    class="theme-toggle"
+                    id="themeToggle"
+                >
+                    🌙
+                </button>
+
+                <!-- CLICKABLE TOP PROFILE -->
+
+                <a href="{% url 'profile' %}" class="top-user">
+
+                    <div class="small-avatar">
+                        {{ user.username|first|upper }}
+                    </div>
+
+                    {{ user.username }}
+
+                </a>
+
+            </div>
+
+        </header>
+
+        <div class="content">
+
+            <div class="breadcrumb">
+
+                <a href="{% url 'dashboard' %}">
+                    Dashboard
+                </a>
+
+                &nbsp; / &nbsp;
+
+                Projects
+
+            </div>
+
+            <div class="heading-row">
+
+                <div class="heading">
+
+                    <h1>
+                        Your Projects
+                    </h1>
+
+                    <p>
+                        Manage your projects and keep your work organized.
+                    </p>
+
+                </div>
+
+                <a
+                    href="{% url 'create_project' %}"
+                    class="new-project"
+                >
+                    + New Project
+                </a>
+
+            </div>
+
+            {% if projects %}
+
+                <div class="project-grid">
+
+                    {% for project in projects %}
+
+                        <div class="project-card">
+
+                            <div class="project-top">
+
+                                <div class="project-icon">
+                                    P
+                                </div>
+
+                                <div class="project-menu">
+                                    •••
+                                </div>
+
+                            </div>
+
+                            <h2>
+                                {{ project.name }}
+                            </h2>
+
+                            <p class="project-description">
+
+                                {% if project.description %}
+                                    {{ project.description }}
+                                {% else %}
+                                    No description added for this project.
+                                {% endif %}
+
+                            </p>
+
+                            <div class="project-footer">
+
+                                <span class="project-label">
+                                    Project
+                                </span>
+
+                                <div class="project-actions">
+
+                                    <a
+                                        href="{% url 'edit_project' project.id %}"
+                                        class="action-btn edit"
+                                    >
+                                        Edit
+                                    </a>
+
+                                    <a
+                                        href="{% url 'delete_project' project.id %}"
+                                        class="action-btn delete"
+                                    >
+                                        Delete
+                                    </a>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+            {% else %}
+
+                <div class="empty-state">
+
+                    <div class="empty-icon">
+                        ▣
+                    </div>
+
+                    <h2>
+                        No projects yet
+                    </h2>
+
+                    <p>
+                        Create your first project to start organizing your work.
+                    </p>
+
+                    <a
+                        href="{% url 'create_project' %}"
+                        class="empty-btn"
+                    >
+                        + Create Your First Project
+                    </a>
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </main>
+
+</div>
+
+<script>
+
+    const themeToggle = document.getElementById("themeToggle");
+
+    function updateThemeButton() {
+
+        if (document.body.classList.contains("dark")) {
+            themeToggle.textContent = "☀️";
+            themeToggle.title = "Switch to light mode";
+        } else {
+            themeToggle.textContent = "🌙";
+            themeToggle.title = "Switch to dark mode";
+        }
+
+    }
+
+    const savedTheme =
+        localStorage.getItem("projectflow-theme");
+
+    if (savedTheme === "dark") {
+        document.body.classList.add("dark");
+    }
+
+    updateThemeButton();
+
+    themeToggle.addEventListener("click", function () {
+
+        document.body.classList.toggle("dark");
+
+        const isDark =
+            document.body.classList.contains("dark");
+
+        localStorage.setItem(
+            "projectflow-theme",
+            isDark ? "dark" : "light"
+        );
+
+        updateThemeButton();
+
+    });
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Profile | ProjectFlow</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        :root {
+            --bg: #f7f8fc;
+            --card: #ffffff;
+            --text: #172033;
+            --text-secondary: #64748b;
+            --muted: #9ca3af;
+            --border: #e8eaf0;
+            --sidebar: #111827;
+            --sidebar-hover: #1f2937;
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+        }
+
+        body.dark {
+            --bg: #0f172a;
+            --card: #1e293b;
+            --text: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --muted: #94a3b8;
+            --border: #334155;
+            --sidebar: #020617;
+            --sidebar-hover: #1e293b;
+            --primary: #6366f1;
+            --primary-hover: #818cf8;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            transition: 0.25s;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* SIDEBAR */
+
+        .sidebar {
+            width: 245px;
+            background: var(--sidebar);
+            color: white;
+            padding: 25px 16px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            padding: 5px 12px 35px;
+        }
+
+        .logo-icon {
+            width: 38px;
+            height: 38px;
+            background: #6366f1;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .logo h2 {
+            font-size: 19px;
+        }
+
+        .menu-title {
+            color: #6b7280;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 0 13px 10px;
+        }
+
+        .nav {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .nav a {
+            color: #9ca3af;
+            padding: 12px 13px;
+            border-radius: 9px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: 0.2s;
+        }
+
+        .nav a:hover {
+            background: var(--sidebar-hover);
+            color: white;
+        }
+
+        .nav a.active {
+            background: var(--sidebar-hover);
+            color: white;
+            border-left: 3px solid #6366f1;
+        }
+
+        .nav-icon {
+            width: 20px;
+            text-align: center;
+        }
+
+        .sidebar-bottom {
+            margin-top: auto;
+        }
+
+        .user-box {
+            border-top: 1px solid #293241;
+            padding: 18px 10px 5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #6366f1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            color: white;
+        }
+
+        .user-details {
+            overflow: hidden;
+        }
+
+        .user-details strong {
+            display: block;
+            color: white;
+            font-size: 13px;
+        }
+
+        .user-details span {
+            color: #6b7280;
+            font-size: 11px;
+        }
+
+        .logout {
+            display: block;
+            color: #9ca3af;
+            padding: 12px;
+            margin-top: 10px;
+            font-size: 13px;
+            border-radius: 8px;
+        }
+
+        .logout:hover {
+            color: #f87171;
+            background: var(--sidebar-hover);
+        }
+
+        /* MAIN */
+
+        .main {
+            margin-left: 245px;
+            width: calc(100% - 245px);
+            min-height: 100vh;
+        }
+
+        /* TOPBAR */
+
+        .topbar {
+            height: 72px;
+            background: var(--card);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 38px;
+        }
+
+        .page-title {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .top-right {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .notification {
+            width: 36px;
+            height: 36px;
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--text-secondary);
+        }
+
+        .theme-toggle {
+            width: 40px;
+            height: 40px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: var(--card);
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .top-user {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            color: var(--text-secondary);
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .small-avatar {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: #eef2ff;
+            color: #4f46e5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+        }
+
+        /* CONTENT */
+
+        .content {
+            padding: 40px;
+            max-width: 1100px;
+        }
+
+        .breadcrumb {
+            color: var(--muted);
+            font-size: 12px;
+            margin-bottom: 22px;
+        }
+
+        .breadcrumb a {
+            color: #6366f1;
+        }
+
+        .heading {
+            margin-bottom: 25px;
+        }
+
+        .heading h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .heading p {
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        /* PROFILE CARD */
+
+        .profile-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 35px;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .profile-avatar {
+            width: 82px;
+            height: 82px;
+            border-radius: 50%;
+            background: #6366f1;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+        .profile-header h2 {
+            font-size: 21px;
+            margin-bottom: 6px;
+        }
+
+        .profile-header p {
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .profile-info {
+            padding-top: 28px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 17px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .info-value {
+            color: var(--text);
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 25px;
+        }
+
+        .btn {
+            padding: 11px 18px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .primary:hover {
+            background: var(--primary-hover);
+        }
+
+        .secondary {
+            background: var(--bg);
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+        }
+
+        .secondary:hover {
+            background: #e5e7eb;
+        }
+
+        /* WORK STATS */
+
+        .work-section {
+            margin-top: 25px;
+        }
+
+        .work-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .work-subtitle {
+            color: var(--muted);
+            font-size: 13px;
+            margin-bottom: 18px;
+        }
+
+        .work-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .work-stat {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 20px;
+        }
+
+        .work-stat span {
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .work-stat h3 {
+            margin-top: 8px;
+            font-size: 25px;
+        }
+
+        /* GRAPHS */
+
+        .graph-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.4fr;
+            gap: 20px;
+        }
+
+        .graph-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 25px;
+        }
+
+        .graph-card h3 {
+            font-size: 16px;
+            margin-bottom: 18px;
+        }
+
+        .chart-box {
+            position: relative;
+            height: 300px;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 750px) {
+
+            .sidebar {
+                width: 70px;
+                padding: 20px 10px;
+            }
+
+            .logo h2,
+            .menu-title,
+            .nav a span:not(.nav-icon),
+            .user-details,
+            .logout span {
+                display: none;
+            }
+
+            .logo {
+                justify-content: center;
+            }
+
+            .nav a {
+                justify-content: center;
+            }
+
+            .user-box {
+                justify-content: center;
+            }
+
+            .main {
+                margin-left: 70px;
+                width: calc(100% - 70px);
+            }
+
+            .topbar {
+                padding: 0 20px;
+            }
+
+            .content {
+                padding: 25px 20px;
+            }
+
+            .work-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .graph-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 550px) {
+
+            .top-user {
+                display: none;
+            }
+
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .info-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 6px;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="layout">
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+
+            <div class="logo-icon">
+                P
+            </div>
+
+            <h2>
+                ProjectFlow
+            </h2>
+
+        </div>
+
+
+        <div class="menu-title">
+            Workspace
+        </div>
+
+
+        <nav class="nav">
+
+            <a href="{% url 'dashboard' %}">
+                <span class="nav-icon">▦</span>
+                <span>Dashboard</span>
+            </a>
+
+            <a href="{% url 'projects' %}">
+                <span class="nav-icon">▣</span>
+                <span>Projects</span>
+            </a>
+
+            <a href="{% url 'task_list' %}">
+                <span class="nav-icon">✓</span>
+                <span>Tasks</span>
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <div class="menu-title">
+                Account
+            </div>
+
+
+            <nav class="nav">
+
+                <a href="{% url 'profile' %}" class="active">
+                    <span class="nav-icon">👤</span>
+                    <span>Profile</span>
+                </a>
+
+                <a href="{% url 'settings' %}">
+                    <span class="nav-icon">⚙</span>
+                    <span>Settings</span>
+                </a>
+
+            </nav>
+
+
+            <a href="{% url 'profile' %}" class="user-box">
+
+                <div class="avatar">
+                    {{ user.username|first|upper }}
+                </div>
+
+                <div class="user-details">
+
+                    <strong>
+                        {{ user.username }}
+                    </strong>
+
+                    <span>
+                        Project Manager
+                    </span>
+
+                </div>
+
+            </a>
+
+
+            <a href="{% url 'logout' %}" class="logout">
+                <span>↪ &nbsp; Logout</span>
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN -->
+
+    <main class="main">
+
+        <header class="topbar">
+
+            <div class="page-title">
+                Profile
+            </div>
+
+
+            <div class="top-right">
+
+                <div class="notification">
+                    ♢
+                </div>
+
+
+                <button
+                    type="button"
+                    class="theme-toggle"
+                    id="themeToggle">
+                    🌙
+                </button>
+
+
+                <a href="{% url 'profile' %}" class="top-user">
+
+                    <div class="small-avatar">
+                        {{ user.username|first|upper }}
+                    </div>
+
+                    {{ user.username }}
+
+                </a>
+
+            </div>
+
+        </header>
+
+
+        <!-- CONTENT -->
+
+        <div class="content">
+
+
+            <div class="breadcrumb">
+
+                <a href="{% url 'dashboard' %}">
+                    Dashboard
+                </a>
+
+                &nbsp; / &nbsp;
+
+                Profile
+
+            </div>
+
+
+            <div class="heading">
+
+                <h1>
+                    My Profile
+                </h1>
+
+                <p>
+                    View your account information and profile details.
+                </p>
+
+            </div>
+
+
+            <!-- PROFILE CARD -->
+
+            <div class="profile-card">
+
+
+                <div class="profile-header">
+
+                    <div class="profile-avatar">
+                        {{ user.username|first|upper }}
+                    </div>
+
+
+                    <div>
+
+                        <h2>
+                            {{ user.username }}
+                        </h2>
+
+                        <p>
+                            Project Manager
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="profile-info">
+
+
+                    <div class="info-row">
+
+                        <span class="info-label">
+                            Username
+                        </span>
+
+                        <span class="info-value">
+                            {{ user.username }}
+                        </span>
+
+                    </div>
+
+
+                    <div class="info-row">
+
+                        <span class="info-label">
+                            Email Address
+                        </span>
+
+                        <span class="info-value">
+                            {{ user.email|default:"No email added" }}
+                        </span>
+
+                    </div>
+
+
+                    <div class="info-row">
+
+                        <span class="info-label">
+                            Account Type
+                        </span>
+
+                        <span class="info-value">
+                            Project Manager
+                        </span>
+
+                    </div>
+
+
+                    <div class="info-row">
+
+                        <span class="info-label">
+                            Member Since
+                        </span>
+
+                        <span class="info-value">
+                            {{ user.date_joined|date:"d M Y" }}
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="actions">
+
+                    <a
+                        href="{% url 'dashboard' %}"
+                        class="btn primary">
+
+                        ← Back to Dashboard
+
+                    </a>
+
+
+                    <a
+                        href="{% url 'settings' %}"
+                        class="btn secondary">
+
+                        ⚙ Settings
+
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- WORK SECTION -->
+
+            <div class="work-section">
+
+
+                <div class="work-title">
+                    Work Overview
+                </div>
+
+
+                <div class="work-subtitle">
+                    Your projects and task activity.
+                </div>
+
+
+                <!-- STAT CARDS -->
+
+                <div class="work-stats">
+
+
+                    <div class="work-stat">
+
+                        <span>
+                            Total Projects
+                        </span>
+
+                        <h3>
+                            {{ total_projects }}
+                        </h3>
+
+                    </div>
+
+
+                    <div class="work-stat">
+
+                        <span>
+                            Total Tasks
+                        </span>
+
+                        <h3>
+                            {{ total_tasks }}
+                        </h3>
+
+                    </div>
+
+
+                    <div class="work-stat">
+
+                        <span>
+                            In Progress
+                        </span>
+
+                        <h3>
+                            {{ in_progress_tasks }}
+                        </h3>
+
+                    </div>
+
+
+                    <div class="work-stat">
+
+                        <span>
+                            Completed
+                        </span>
+
+                        <h3>
+                            {{ completed_tasks }}
+                        </h3>
+
+                    </div>
+
+                </div>
+
+
+                <!-- GRAPHS -->
+
+                <div class="graph-grid">
+
+
+                    <!-- TASK STATUS -->
+
+                    <div class="graph-card">
+
+                        <h3>
+                            Task Status
+                        </h3>
+
+                        <div class="chart-box">
+
+                            <canvas id="taskChart"></canvas>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- TASKS BY PROJECT -->
+
+                    <div class="graph-card">
+
+                        <h3>
+                            Tasks by Project
+                        </h3>
+
+                        <div class="chart-box">
+
+                            <canvas id="projectChart"></canvas>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<!--
+    ============================================================
+    DJANGO DATA FOR JAVASCRIPT
+    ============================================================
+    
+    IMPORTANT:
+    We keep Django template tags OUT of normal JavaScript.
+    This removes the red VS Code JavaScript errors.
+-->
+
+{{ todo_tasks|json_script:"todo-tasks-data" }}
+
+{{ in_progress_tasks|json_script:"in-progress-tasks-data" }}
+
+{{ completed_tasks|json_script:"completed-tasks-data" }}
+
+{{ project_names|json_script:"project-names-data" }}
+
+{{ project_task_counts|json_script:"project-task-counts-data" }}
+
+
+<!-- CHART.JS -->
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+<script>
+
+    /*
+     * ============================================================
+     * GET DATA FROM DJANGO
+     * ============================================================
+     */
+
+    const todoTasks = JSON.parse(
+        document.getElementById("todo-tasks-data").textContent
+    );
+
+    const inProgressTasks = JSON.parse(
+        document.getElementById("in-progress-tasks-data").textContent
+    );
+
+    const completedTasks = JSON.parse(
+        document.getElementById("completed-tasks-data").textContent
+    );
+
+    const projectLabels = JSON.parse(
+        document.getElementById("project-names-data").textContent
+    );
+
+    const projectData = JSON.parse(
+        document.getElementById("project-task-counts-data").textContent
+    );
+
+
+    /*
+     * ============================================================
+     * TASK STATUS DATA
+     * ============================================================
+     */
+
+    const taskLabels = [
+        "To Do",
+        "In Progress",
+        "Completed"
+    ];
+
+    const taskData = [
+        todoTasks,
+        inProgressTasks,
+        completedTasks
+    ];
+
+
+    /*
+     * ============================================================
+     * TASK STATUS CHART
+     * ============================================================
+     */
+
+    const taskChartElement =
+        document.getElementById("taskChart");
+
+
+    new Chart(taskChartElement, {
+
+        type: "doughnut",
+
+        data: {
+
+            labels: taskLabels,
+
+            datasets: [
+
+                {
+                    label: "Tasks",
+
+                    data: taskData
+                }
+
+            ]
+
+        },
+
+        options: {
+
+            responsive: true,
+
+            maintainAspectRatio: false,
+
+            plugins: {
+
+                legend: {
+
+                    position: "bottom"
+
+                }
+
+            }
+
+        }
+
+    });
+
+
+    /*
+     * ============================================================
+     * TASKS BY PROJECT CHART
+     * ============================================================
+     */
+
+    const projectChartElement =
+        document.getElementById("projectChart");
+
+
+    new Chart(projectChartElement, {
+
+        type: "bar",
+
+        data: {
+
+            labels: projectLabels,
+
+            datasets: [
+
+                {
+
+                    label: "Tasks",
+
+                    data: projectData
+
+                }
+
+            ]
+
+        },
+
+        options: {
+
+            responsive: true,
+
+            maintainAspectRatio: false,
+
+            scales: {
+
+                y: {
+
+                    beginAtZero: true,
+
+                    ticks: {
+
+                        precision: 0
+
+                    }
+
+                }
+
+            },
+
+            plugins: {
+
+                legend: {
+
+                    display: false
+
+                }
+
+            }
+
+        }
+
+    });
+
+
+    /*
+     * ============================================================
+     * DARK MODE
+     * ============================================================
+     */
+
+    const themeToggle =
+        document.getElementById("themeToggle");
+
+
+    const savedTheme =
+        localStorage.getItem("projectflow-theme");
+
+
+    if (savedTheme === "dark") {
+
+        document.body.classList.add("dark");
+
+        themeToggle.textContent = "☀️";
+
+    }
+
+    else {
+
+        themeToggle.textContent = "🌙";
+
+    }
+
+
+    themeToggle.addEventListener(
+        "click",
+        function () {
+
+            document.body.classList.toggle("dark");
+
+
+            const isDark =
+                document.body.classList.contains("dark");
+
+
+            localStorage.setItem(
+                "projectflow-theme",
+                isDark ? "dark" : "light"
+            );
+
+
+            themeToggle.textContent =
+                isDark ? "☀️" : "🌙";
+
+        }
+    );
+
+</script>
+
+
+</body>
+
+</html>
